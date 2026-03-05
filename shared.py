@@ -317,6 +317,8 @@ class SharedData:
             # Network interfaces
             "__title_interfaces__": "Network Interfaces",
             "ip_iface_priority": ["wlan0", "eth0"],
+            "prefer_usb_wifi_adapter": True,
+            "prefer_usb_ethernet_adapter": True,
             "neigh_wifi_iface": "wlan0",
             "neigh_ethernet_iface": "eth0",
             "neigh_usb_iface": "usb0",
@@ -540,10 +542,159 @@ class SharedData:
             else:
                 logger.info(f"{value_type} {value} already in blacklist")
 
+    def list_network_interfaces(self) -> List[str]:
+        """Return available interfaces from /sys/class/net (excluding loopback)."""
+        try:
+            ifaces = [i for i in os.listdir("/sys/class/net") if i and i != "lo"]
+            # Keep stable ordering with common Linux names first.
+            return sorted(ifaces, key=lambda x: (not x.startswith(("wl", "en", "eth", "usb")), x))
+        except Exception:
+            return []
+
+    def list_wifi_interfaces(self) -> List[str]:
+        """Return detected Wi-Fi interfaces."""
+        wifi_ifaces: List[str] = []
+        try:
+            for iface in self.list_network_interfaces():
+                wireless_path = os.path.join("/sys/class/net", iface, "wireless")
+                if os.path.isdir(wireless_path):
+                    wifi_ifaces.append(iface)
+            if wifi_ifaces:
+                return wifi_ifaces
+
+            # Fallback for some drivers that expose /proc/net/wireless only.
+            if os.path.exists("/proc/net/wireless"):
+                with open("/proc/net/wireless", "r", encoding="utf-8", errors="ignore") as f:
+                    for line in f.readlines()[2:]:
+                        if ":" in line:
+                            iface = line.split(":", 1)[0].strip()
+                            if iface and iface != "lo":
+                                wifi_ifaces.append(iface)
+        except Exception:
+            pass
+        return wifi_ifaces
+
+    def list_ethernet_interfaces(self) -> List[str]:
+        """Return detected wired Ethernet interfaces (including USB Ethernet)."""
+        ethernet_ifaces: List[str] = []
+        wifi_set = set(self.list_wifi_interfaces())
+        try:
+            for iface in self.list_network_interfaces():
+                if iface in wifi_set:
+                    continue
+                # Keep common wired interface naming and skip gadget/bluetooth/virtual names.
+                if iface.startswith(("eth", "enx", "enp")):
+                    ethernet_ifaces.append(iface)
+            return ethernet_ifaces
+        except Exception:
+            return ethernet_ifaces
+
+    def resolve_preferred_wifi_interface(self) -> Optional[str]:
+        """Resolve best Wi-Fi interface, preferring configured value when present."""
+        wifi_ifaces = self.list_wifi_interfaces()
+        if not wifi_ifaces:
+            return None
+
+        prefer_usb_wifi = bool(getattr(self, "prefer_usb_wifi_adapter", True))
+        if prefer_usb_wifi:
+            usb_wifi = [iface for iface in wifi_ifaces if self.is_usb_network_interface(iface)]
+            if usb_wifi:
+                for iface in usb_wifi:
+                    if iface.startswith("wlan"):
+                        return iface
+                return usb_wifi[0]
+
+        preferred = str(getattr(self, "neigh_wifi_iface", "") or "").strip()
+        if preferred and preferred in wifi_ifaces:
+            return preferred
+
+        default_iface = str(getattr(self, "default_network_interface", "") or "").strip()
+        if default_iface and default_iface in wifi_ifaces:
+            return default_iface
+
+        # Prefer classic wlan* naming when available, then first detected.
+        for iface in wifi_ifaces:
+            if iface.startswith("wlan"):
+                return iface
+        return wifi_ifaces[0]
+
+    def is_usb_network_interface(self, iface: str) -> bool:
+        """Return True if interface is backed by an USB device."""
+        try:
+            if not iface:
+                return False
+            dev_path = os.path.realpath(os.path.join("/sys/class/net", iface, "device"))
+            return "/usb" in dev_path.replace("\\", "/")
+        except Exception:
+            return False
+
+    def resolve_preferred_ethernet_interface(self) -> Optional[str]:
+        """Resolve best Ethernet interface, including USB Ethernet (enx...)."""
+        ethernet_ifaces = self.list_ethernet_interfaces()
+        if not ethernet_ifaces:
+            return None
+
+        prefer_usb_eth = bool(getattr(self, "prefer_usb_ethernet_adapter", True))
+        if prefer_usb_eth:
+            usb_eth = [iface for iface in ethernet_ifaces if self.is_usb_network_interface(iface)]
+            if usb_eth:
+                for iface in usb_eth:
+                    if iface.startswith("enx"):
+                        return iface
+                return usb_eth[0]
+
+        configured_eth = str(getattr(self, "neigh_ethernet_iface", "") or "").strip()
+        if configured_eth and configured_eth in ethernet_ifaces:
+            return configured_eth
+
+        default_iface = str(getattr(self, "default_network_interface", "") or "").strip()
+        if default_iface and default_iface in ethernet_ifaces:
+            return default_iface
+
+        if "eth0" in ethernet_ifaces:
+            return "eth0"
+        for iface in ethernet_ifaces:
+            if iface.startswith("enx"):
+                return iface
+        return ethernet_ifaces[0]
+
+    def resolve_default_network_interface(self) -> Optional[str]:
+        """Resolve best network interface for scanning/routing."""
+        configured = str(getattr(self, "default_network_interface", "") or "").strip()
+        available = self.list_network_interfaces()
+        if configured and configured in available and not configured.startswith("bnep"):
+            return configured
+
+        eth_iface = self.resolve_preferred_ethernet_interface()
+        if eth_iface:
+            return eth_iface
+
+        wifi_iface = self.resolve_preferred_wifi_interface()
+        if wifi_iface:
+            return wifi_iface
+
+        for candidate in ("eth0", "usb0"):
+            if candidate in available:
+                return candidate
+
+        return available[0] if available else None
+
     def get_raspberry_mac(self) -> Optional[str]:
         """Get MAC address of primary network interface"""
         try:
-            for path in ("/sys/class/net/wlan0/address", "/sys/class/net/eth0/address"):
+            wifi_iface = self.resolve_preferred_wifi_interface()
+            eth_iface = self.resolve_preferred_ethernet_interface()
+            paths = []
+            if eth_iface:
+                paths.append(f"/sys/class/net/{eth_iface}/address")
+            if wifi_iface:
+                paths.append(f"/sys/class/net/{wifi_iface}/address")
+            paths.extend([
+                "/sys/class/net/eth0/address",
+                "/sys/class/net/wlan0/address",
+            ])
+
+            for path in paths:
                 if not os.path.exists(path):
                     continue
                 try:
@@ -554,7 +705,7 @@ class SharedData:
                 except Exception as read_error:
                     logger.debug(f"Could not read {path}: {read_error}")
             
-            logger.warning("Could not find MAC address for wlan0 or eth0")
+            logger.warning("Could not find MAC address for detected Wi-Fi or eth0")
             return None
             
         except Exception as e:

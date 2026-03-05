@@ -278,7 +278,22 @@ class RuntimeStateUpdater(threading.Thread):
             getattr(self.shared_data, "ip_iface_priority", ["wlan0", "eth0"]),
             default=["wlan0", "eth0"],
         )
+        dynamic_ifaces = []
+        try:
+            wifi_iface = getattr(self.shared_data, "resolve_preferred_wifi_interface", lambda: None)()
+            eth_iface = getattr(self.shared_data, "resolve_preferred_ethernet_interface", lambda: None)()
+            default_iface = getattr(self.shared_data, "resolve_default_network_interface", lambda: None)()
+            dynamic_ifaces.extend([eth_iface, wifi_iface, default_iface, "wlan0", "eth0"])
+        except Exception:
+            dynamic_ifaces.extend(["wlan0", "eth0"])
+
+        for iface in dynamic_ifaces:
+            if iface and iface not in iface_list:
+                iface_list.append(iface)
+
         for iface in iface_list:
+            if not iface or iface == "auto":
+                continue
             try:
                 result = subprocess.run(
                     # Keep output small; we only need the IPv4 address.
@@ -344,6 +359,9 @@ class RuntimeStateUpdater(threading.Thread):
             results["bluetooth"] = any(f"dev {iface}" in neigh_output for iface in bt_ifaces)
 
             eth_iface = self._as_str(
+                getattr(self.shared_data, "resolve_preferred_ethernet_interface", lambda: None)(),
+                "",
+            ) or self._as_str(
                 getattr(self.shared_data, "neigh_ethernet_iface", "eth0"),
                 "eth0",
             )
