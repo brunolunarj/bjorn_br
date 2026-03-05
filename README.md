@@ -24,6 +24,7 @@ Bjorn é uma ferramenta autônoma de segurança ofensiva e avaliação de vulner
 - [Primeiros Passos](#-primeiros-passos)
   - [Pré-requisitos](#-pré-requisitos)
   - [Instalação](#-instalação)
+  - [Instalação via GitHub (bjorn_br)](#-instalação-via-github-bjorn_br)
 - [Início Rápido](#-início-rápido)
 - [Exemplo de Uso](#-exemplo-de-uso)
 - [Contribuição](#-contribuição)
@@ -87,6 +88,26 @@ Para instalação automática, use o script local deste repositório:
 ```bash
 cd /home/bjorn/Bjorn
 sudo chmod +x install_bjorn.sh
+sudo ./install_bjorn.sh
+```
+
+### 🔗 Instalação via GitHub (bjorn_br)
+
+Se você vai instalar diretamente do repositório bjorn_br:
+
+```bash
+cd /home/bjorn
+git clone https://github.com/brunolunarj/bjorn_br.git
+cd bjorn_br
+git checkout main
+sudo chmod +x install_bjorn.sh
+sudo ./install_bjorn.sh
+```
+
+Se preferir a branch de desenvolvimento:
+
+```bash
+git checkout ai
 sudo ./install_bjorn.sh
 ```
 
