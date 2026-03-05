@@ -1,0 +1,12 @@
+services:
+  bjorn-cortex:
+    image: ${CORTEX_IMAGE}
+    container_name: bjorn-cortex
+    restart: unless-stopped
+    ports:
+      - "${CORTEX_PORT:-8001}:8000"
+    environment:
+      TZ: ${TZ:-America/Sao_Paulo}
+    volumes:
+      - ./data/models:/data/models
+      - ./data/uploads:/data/uploads

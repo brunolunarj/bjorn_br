@@ -9,6 +9,7 @@
 - [Pré-requisitos](#-pré-requisitos)
 - [Instalação rápida](#-instalação-rápida)
 - [Instalação manual](#-instalação-manual)
+- [Integração com servidor de IA (Bjorn-cortex)](#-integração-com-servidor-de-ia-bjorn-cortex)
 - [Licença](#-licença)
 
 Use o Raspberry Pi Imager para gravar o sistema:
@@ -123,6 +124,22 @@ No PC Windows:
 - Máscara: `255.255.255.0`
 - Gateway: `172.20.2.1`
 - DNS: `8.8.8.8`, `8.8.4.4`
+
+### 🧠 Integração com servidor de IA (Bjorn-cortex)
+
+Se você quer usar treinamento/sincronização de IA externa:
+
+1. Suba o servidor Bjorn-cortex em outra máquina usando os templates em:
+   - `deploy/bjorn-cortex/docker-compose.yml`
+   - `deploy/bjorn-cortex/.env.example`
+   - `deploy/bjorn-cortex/README.md`
+2. No Pi do Bjorn, ajuste `config/shared_config.json`:
+   - `ai_server_url`: `http://IP_DO_SERVIDOR:8001`
+3. Reinicie o serviço:
+
+```bash
+sudo systemctl restart bjorn.service
+```
 
 ---
 
