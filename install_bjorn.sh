@@ -243,6 +243,7 @@ install_dependencies() {
         "tshark"
         "net-tools"
         "python3-dbus"
+        "python3-paramiko"
     )
     
     # Install packages

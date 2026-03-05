@@ -79,12 +79,6 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             '/favicon.ico': wu.index_utils.serve_favicon,
             '/manifest.json': wu.index_utils.serve_manifest,
 
-            # C2
-            '/c2/agents': wu.c2.c2_agents,
-            '/c2/events': wu.c2.c2_events_sse,
-            '/c2/list_clients': wu.c2.c2_list_clients,
-            '/c2/status': wu.c2.c2_status,
-
             # WEBENUM (handled via startswith)
 
             # NETWORK
@@ -145,6 +139,18 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             '/api/rl/history': wu.rl.get_training_history,
             '/api/rl/experiences': wu.rl.get_recent_experiences,
         }
+
+        # Optional C2 routes. If dependencies are missing (e.g., paramiko),
+        # keep the web UI available and only disable C2 endpoints.
+        try:
+            cls.GET_ROUTES.update({
+                '/c2/agents': wu.c2.c2_agents,
+                '/c2/events': wu.c2.c2_events_sse,
+                '/c2/list_clients': wu.c2.c2_list_clients,
+                '/c2/status': wu.c2.c2_status,
+            })
+        except Exception as exc:
+            logger.warning(f"C2 routes disabled due to missing dependency or import error: {exc}")
 
         if debug_enabled:
             cls.GET_ROUTES.update({
