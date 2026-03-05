@@ -150,7 +150,7 @@ function ensureChipHelpers() {
 function createBooleanField(key, value, tooltipI18nKey = '') {
   return el('div', { class: 'cfg-field cfg-toggle-row', 'data-key': key, 'data-type': 'boolean' }, [
     createFieldLabel(key, `cfg_${key}`, tooltipI18nKey),
-    el('label', { class: 'switch' }, [
+    el('label', { class: 'cfg-switch' }, [
       el('input', { id: `cfg_${key}`, type: 'checkbox', ...(value ? { checked: '' } : {}) }),
       el('span', { class: 'slider' }),
     ]),
@@ -371,6 +371,5 @@ export function mountConfig(host) {
 export function hasLoadedConfig() {
   return !!_lastConfig;
 }
-
 
 
