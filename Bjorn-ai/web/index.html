@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self';">
+  <title>Bjorn Cyberviking</title>
+  <link rel="icon" href="/web/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/web/css/global.css">
+  <link rel="stylesheet" href="/web/css/shell.css">
+  <link rel="stylesheet" href="/web/css/pages.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" sizes="192x192" href="/web/images/icon-192x192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#050709">
+</head>
+
+<body>
+  <!-- SPA Shell: topbar + page container + bottombar -->
+
+  <header class="topbar" id="topbar" role="banner">
+    <div class="logo" id="logoBtn" role="button" tabindex="0" aria-label="Home">
+      <img class="sig" src="/web/images/bjornwebicon.png" alt="Bjorn" width="28" height="28">
+      <span>BJORN</span>
+    </div>
+    <button class="btn" id="openSettings" aria-label="Settings">
+      <span class="icon" aria-hidden="true">&#9881;</span>
+      <span class="label" data-i18n="nav.settings">Settings</span>
+    </button>
+    <button class="btn" id="openQuick" aria-label="Shortcuts">
+      <span class="icon" aria-hidden="true">&#9889;</span>
+      <span class="label" data-i18n="nav.shortcuts">Shortcuts</span>
+    </button>
+    <div class="spacer"></div>
+
+    <!-- Actions dropdown -->
+    <div class="actions" id="actionsWrap">
+      <button class="btn" id="actionsBtn" aria-haspopup="true" aria-expanded="false" aria-controls="actionsMenu">
+        <span class="icon" aria-hidden="true">&#128736;</span>
+        <span class="label" data-i18n="nav.actions">Actions</span>
+      </button>
+      <div class="dropdown" id="actionsMenu" role="menu" aria-hidden="true"></div>
+    </div>
+
+    <div class="lang-select" id="langSelect"></div>
+    <button class="btn" id="openLauncher" aria-label="Pages">
+      <span class="icon" aria-hidden="true">&#9783;</span>
+      <span class="label" data-i18n="nav.pages">Pages</span>
+    </button>
+  </header>
+
+  <!-- Main page container: each page module renders here -->
+  <main id="app" class="app-container" role="main" aria-live="polite"></main>
+
+  <footer class="bottombar" id="bottombar" role="contentinfo">
+    <div class="status-left">
+      <span class="pill status-pill" style="display:inline-flex;align-items:center;gap:6px">
+        <img id="bjornStatusImage" alt="Status"
+          style="width:40px;height:40px;border-radius:6px;background:#222;flex:0 0 auto">
+      </span>
+      <div class="status-text">
+        <div id="bjornStatus" class="bjorn-status" data-i18n="status.initializing">Initializing...</div>
+        <div id="bjornStatus2" class="bjorn-status2">.</div>
+      </div>
+    </div>
+    <div class="status-center">
+      <span class="status-character">
+        <img id="bjorncharacter" alt="Bjorn"
+          style="width:50px;height:50px;border-radius:6px;cursor:pointer;flex-shrink:0">
+      </span>
+    </div>
+    <div class="status-right">
+      <span id="bjornSay" class="bjorn-say"></span>
+    </div>
+  </footer>
+
+  <!-- Console panel (matches old global.js structure) -->
+  <section class="console" id="console">
+    <div class="console-resize" id="consoleResize" title="Resize"></div>
+    <div class="attackbar" id="attackBar">
+      <select id="selIP" aria-label="Target IP">
+        <option>192.168.1.10</option>
+        <option>192.168.1.75</option>
+        <option>10.0.0.42</option>
+      </select>
+      <select id="selPort" aria-label="Target Port">
+        <option>Auto</option>
+        <option>22</option>
+        <option>80</option>
+        <option>443</option>
+        <option>8080</option>
+      </select>
+      <select id="selAction" aria-label="Attack Action">
+        <option>ARPspoof</option>
+        <option>PortScan</option>
+        <option>BruteSSH</option>
+        <option>HTTPProbe</option>
+      </select>
+      <button class="btn" id="btnScan">Scanning</button>
+      <button class="btn" id="btnAttack">Attack</button>
+    </div>
+    <div class="console-head">
+      <span id="modePill" class="pill mode-pill manual" title="Current mode">
+        <span class="dot"></span> Manual
+      </span>
+      <button class="btn" id="modeToggle" aria-pressed="true">Auto</button>
+      <button class="btn" id="attackToggle">Attack &#9662;</button>
+      <button class="btn" id="clearLogs" data-i18n="console.clear">Clear</button>
+      <button class="btn" id="closeConsole">X</button>
+      <div id="consoleFontRow" class="console-fontrow">
+        <label for="consoleFont" class="sr-only">Console font size</label>
+        <input id="consoleFont" type="range" min="2" max="24" step="1" value="11" title="Console font"
+          aria-label="Console font size">
+      </div>
+    </div>
+    <div class="console-body" id="logout" role="log" aria-live="polite"></div>
+  </section>
+
+  <!-- QuickPanel (WiFi/Bluetooth management) -->
+  <div class="quickpanel" id="quickpanel" aria-hidden="true">
+    <div class="grip"></div>
+  </div>
+
+  <!-- Page launcher rail -->
+  <aside id="launcher" class="launcher" aria-hidden="true"></aside>
+
+  <!-- Navigation overlay (grid mode) -->
+  <div id="navOverlay" class="nav-overlay" aria-hidden="true">
+    <div class="nav-grid-container">
+      <div class="nav-grid" id="navGrid"></div>
+    </div>
+  </div>
+
+  <!-- Settings modal -->
+  <div class="modal-backdrop" id="settingsBackdrop" aria-hidden="true"></div>
+
+  <!-- System dialog modal -->
+  <div class="modal-backdrop" id="sysDialogBackdrop" aria-hidden="true"></div>
+
+  <!-- Chip edit sheet -->
+  <div class="sheet-backdrop" id="chipEditBackdrop" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="chipEditTitle">
+      <div class="sheet-head">
+        <strong id="chipEditTitle">Edit value</strong>
+        <span class="spacer"></span>
+        <button class="btn" id="chipEditClose" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="sheet-body">
+        <label class="field" style="gap:8px">
+          <span id="chipEditLabel" class="helper">Value</span>
+          <input id="chipEditInput" class="input" type="text" autocomplete="off">
+          <textarea id="chipEditTextarea" class="input" style="display:none;height:120px;resize:vertical"></textarea>
+        </label>
+      </div>
+      <div class="sheet-foot">
+        <button class="btn" id="chipEditCancel">Cancel</button>
+        <button class="btn" id="chipEditSave">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toasts" class="toast-container" aria-live="assertive"></div>
+
+  <!-- Scanlines overlay -->
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- App bootstrap -->
+  <script type="module" src="/web/js/app.js"></script>
+</body>
+
+</html>
