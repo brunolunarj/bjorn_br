@@ -149,12 +149,27 @@ class NetworkScanner:
                 return net
 
             interface = self.shared_data.default_network_interface
-            if interface.startswith('bnep'):
-                for alt in ['wlan0', 'eth0']:
-                    if alt in netifaces.interfaces():
-                        interface = alt
-                        self.logger.info(f"Switching from bnep* to {interface}")
-                        break
+            available_ifaces = netifaces.interfaces()
+            if (
+                not interface
+                or interface == "auto"
+                or interface.startswith("bnep")
+                or interface not in available_ifaces
+            ):
+                resolved = getattr(self.shared_data, "resolve_default_network_interface", lambda: None)()
+                if resolved and resolved in available_ifaces:
+                    interface = resolved
+                    self.logger.info(f"Using detected interface: {interface}")
+                else:
+                    for alt in ["wlan0", "eth0"]:
+                        if alt in available_ifaces:
+                            interface = alt
+                            self.logger.info(f"Fallback interface selected: {interface}")
+                            break
+
+            if not interface:
+                self.logger.error("No network interface available for scanning.")
+                return None
 
             addrs = netifaces.ifaddresses(interface)
             ip_info = addrs.get(netifaces.AF_INET)

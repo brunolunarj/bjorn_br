@@ -356,14 +356,27 @@ class Bjorn:
             except Exception:
                 return False
 
-        eth_connected = interface_has_ip("eth0")
-        wifi_connected = interface_has_ip("wlan0")
+        eth_iface = None
+        try:
+            eth_iface = self.shared_data.resolve_preferred_ethernet_interface()
+        except Exception:
+            eth_iface = "eth0"
+        eth_connected = interface_has_ip(eth_iface) if eth_iface else False
+        wifi_iface = None
+        try:
+            wifi_iface = self.shared_data.resolve_preferred_wifi_interface()
+        except Exception:
+            wifi_iface = "wlan0"
+        wifi_connected = interface_has_ip(wifi_iface) if wifi_iface else False
 
         self.network_connected = eth_connected or wifi_connected
 
         if self.network_connected != self.previous_network_connected:
             if self.network_connected:
-                logger.info(f"Network status changed: Connected (eth0={eth_connected}, wlan0={wifi_connected})")
+                logger.info(
+                    f"Network status changed: Connected "
+                    f"({eth_iface or 'eth?'}={eth_connected}, {wifi_iface or 'wifi?'}={wifi_connected})"
+                )
             else:
                 logger.warning("Network status changed: Connection lost")
             self.previous_network_connected = self.network_connected
