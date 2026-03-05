@@ -1030,7 +1030,7 @@ body.console-docked .app-container {
   font-weight: 600;
 }
 
-.cfg-toggle-row .switch {
+.cfg-toggle-row .cfg-switch {
   width: 48px;
   height: 26px;
   position: relative;
@@ -1041,11 +1041,11 @@ body.console-docked .app-container {
   cursor: pointer;
 }
 
-.cfg-toggle-row .switch input {
+.cfg-toggle-row .cfg-switch input {
   display: none;
 }
 
-.cfg-toggle-row .switch .slider {
+.cfg-toggle-row .cfg-switch .slider {
   position: absolute;
   top: 2px;
   left: 2px;
@@ -1057,7 +1057,7 @@ body.console-docked .app-container {
   transition: transform .18s ease, background .18s ease;
 }
 
-.cfg-toggle-row .switch input:checked+.slider {
+.cfg-toggle-row .cfg-switch input:checked+.slider {
   transform: translateX(22px);
   background: var(--acid);
   box-shadow: 0 0 10px var(--acid);
