@@ -16,6 +16,19 @@ let _currentLang = 'en';
 let _fallback = {}; // EN always loaded as fallback
 let _reverseFallback = null; // { "English text": "some.key" }
 
+async function getServerPreferredLang() {
+  try {
+    const res = await fetch('/load_config', { cache: 'no-store' });
+    if (!res.ok) return null;
+    const cfg = await res.json();
+    const raw = String(cfg?.lang || '').trim().toLowerCase();
+    const lang = raw.slice(0, 2);
+    return SUPPORTED.includes(lang) ? lang : null;
+  } catch (_) {
+    return null;
+  }
+}
+
 /** Load a language JSON file */
 async function loadLang(lang) {
   if (CACHE[lang]) return CACHE[lang];
@@ -139,9 +152,13 @@ export async function init() {
   buildReverseFallback();
 
   // Detect preferred language
+  const serverLang = await getServerPreferredLang();
   const saved = localStorage.getItem(STORAGE_KEY);
   const browser = (navigator.language || '').slice(0, 2).toLowerCase();
-  const lang = saved || (SUPPORTED.includes(browser) ? browser : 'pt');
+  const lang =
+    serverLang ||
+    (saved && SUPPORTED.includes(saved) ? saved : null) ||
+    (SUPPORTED.includes(browser) ? browser : 'pt');
 
   await setLang(lang);
 }
