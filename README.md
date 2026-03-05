@@ -93,7 +93,7 @@ sudo ./install_bjorn.sh
 
 ### 🔗 Instalação via GitHub (bjorn_br)
 
-Se você vai instalar diretamente do seu repositório:
+Se você vai instalar diretamente do repositório bjorn_br:
 
 ```bash
 cd /home/bjorn
