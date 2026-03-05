@@ -60,7 +60,7 @@ sudo apt install -y \
   libgpiod-dev libi2c-dev libatlas-base-dev build-essential python3-pip \
   wget lsof git libopenjp2-7 nmap libopenblas-dev bluez-tools bluez \
   dhcpcd5 bridge-utils python3-pil smbclient dnsmasq hostapd \
-  aircrack-ng tshark net-tools python3-dbus
+  aircrack-ng tshark net-tools python3-dbus python3-paramiko
 
 sudo nmap --script-updatedb
 ```
