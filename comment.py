@@ -215,6 +215,37 @@ class CommentAI:
             if imported > 0:
                 break
 
+        # If we imported fallback language first, try to add preferred language pack as well.
+        preferred_lang = self._lang_priority()[0] if self._lang_priority() else "pt"
+        try:
+            row = self.shared_data.db.query_one(
+                "SELECT COUNT(1) AS c FROM comments WHERE lang=?",
+                (preferred_lang,),
+            )
+            preferred_count = int(_row_get(row, "c", 0) or 0)
+        except Exception:
+            preferred_count = 0
+
+        if preferred_count == 0:
+            for json_path in self._get_comments_json_paths(preferred_lang):
+                if not os.path.exists(json_path):
+                    continue
+                try:
+                    inserted = int(
+                        self.shared_data.db.import_comments_from_json(
+                            json_path,
+                            lang=preferred_lang,
+                            clear_existing=False,
+                        )
+                    )
+                    if inserted > 0:
+                        logger.info(
+                            f"Imported {inserted} '{preferred_lang}' comments as preferred language from {json_path}"
+                        )
+                        break
+                except Exception as e:
+                    logger.error(f"Failed to import preferred '{preferred_lang}' comments from {json_path}: {e}")
+
         if imported == 0:
             logger.debug("No comments imported, seeding minimal fallback set")
             self._seed_minimal_comments()
