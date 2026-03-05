@@ -12,159 +12,153 @@
   <img src="https://github.com/user-attachments/assets/1b490f07-f28e-4418-8d41-14f1492890c6" alt="bjorn_epd-removebg-preview" width="150">
 </p>
 
-Bjorn is a « Tamagotchi like » sophisticated, autonomous network scanning, vulnerability assessment, and offensive security tool designed to run on a Raspberry Pi equipped with a 2.13-inch e-Paper HAT. This document provides a detailed explanation of the project.
+> **Nota deste repositório**  
+> Este projeto é uma adaptação do **ramo [`ai`](https://github.com/infinition/Bjorn/tree/ai)** do repositório original `infinition/Bjorn`, com ajustes e tradução para **português (pt-BR)**.
 
+Bjorn é uma ferramenta autônoma de segurança ofensiva e avaliação de vulnerabilidades, no estilo “Tamagotchi”, desenvolvida para rodar em Raspberry Pi com display e-Paper HAT de 2.13".
 
-## 📚 Table of Contents
+## 📚 Sumário
 
-- [Introduction](#-introduction)
-- [Features](#-features)
-- [Getting Started](#-getting-started)
-  - [Prerequisites](#-prerequisites)
-  - [Installation](#-installation)
-- [Quick Start](#-quick-start)
-- [Usage Example](#-usage-example)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Contact](#-contact)
+- [Introdução](#-introdução)
+- [Recursos](#-recursos)
+- [Primeiros Passos](#-primeiros-passos)
+  - [Pré-requisitos](#-pré-requisitos)
+  - [Instalação](#-instalação)
+- [Início Rápido](#-início-rápido)
+- [Exemplo de Uso](#-exemplo-de-uso)
+- [Contribuição](#-contribuição)
+- [Licença](#-licença)
+- [Contato](#-contato)
 
-## 📄 Introduction
+## 📄 Introdução
 
-Bjorn is a powerful tool designed to perform comprehensive network scanning, vulnerability assessment, and data ex-filtration. Its modular design and extensive configuration options allow for flexible and targeted operations. By combining different actions and orchestrating them intelligently, Bjorn can provide valuable insights into network security and help identify and mitigate potential risks.
+Bjorn foi projetado para realizar varredura de rede, avaliação de vulnerabilidades e coleta de dados de forma automatizada. A arquitetura modular e as várias opções de configuração permitem operações flexíveis e direcionadas.
 
-The e-Paper HAT display and web interface make it easy to monitor and interact with Bjorn, providing real-time updates and status information. With its extensible architecture and customizable actions, Bjorn can be adapted to suit a wide range of security testing and monitoring needs.
+Combinando diferentes ações de forma orquestrada, Bjorn ajuda a identificar riscos de segurança e a melhorar a visibilidade do ambiente.
 
-## 🌟 Features
+O display e-Paper e a interface web permitem monitoramento em tempo real e controle operacional, enquanto a arquitetura extensível facilita a criação de novos módulos.
 
-- **Network Scanning**: Identifies live hosts and open ports on the network.
-- **Vulnerability Assessment**: Performs vulnerability scans using Nmap and other tools.
-- **System Attacks**: Conducts brute-force attacks on various services (FTP, SSH, SMB, RDP, Telnet, SQL).
-- **File Stealing**: Extracts data from vulnerable services.
-- **User Interface**: Real-time display on the e-Paper HAT and web interface for monitoring and interaction.
+## 🌟 Recursos
+
+- **Varredura de Rede**: identifica hosts ativos e portas abertas.
+- **Avaliação de Vulnerabilidades**: executa varreduras com Nmap e outras técnicas.
+- **Ataques de Serviço**: suporte a brute force em FTP, SSH, SMB, RDP, Telnet e SQL.
+- **Coleta de Arquivos/Dados**: extração de dados em serviços vulneráveis.
+- **Interface de Operação**: display e-Paper + interface web em tempo real.
 
 ![Bjorn Display](https://github.com/infinition/Bjorn/assets/37984399/bcad830d-77d6-4f3e-833d-473eadd33921)
 
-## 🚀 Getting Started
+## 🚀 Primeiros Passos
 
-## 📌 Prerequisites
+## 📌 Pré-requisitos
 
-### 📋 Prerequisites for RPI zero W (32bits)
+### 📋 Raspberry Pi Zero W (32 bits)
 
 ![image](https://github.com/user-attachments/assets/3980ec5f-a8fc-4848-ab25-4356e0529639)
 
-- Raspberry Pi OS installed. 
-    - Stable:
-      - System: 32-bit
-      - Kernel version: 6.6
-      - Debian version: 12 (bookworm) '2024-10-22-raspios-bookworm-armhf-lite'
-- Username and hostname set to `bjorn`.
-- 2.13-inch e-Paper HAT connected to GPIO pins.
+- Raspberry Pi OS instalado.
+  - Recomendado:
+    - Sistema: 32-bit
+    - Kernel: 6.6
+    - Debian: 12 (bookworm) `2024-10-22-raspios-bookworm-armhf-lite`
+- Usuário e hostname configurados como `bjorn`.
+- Display e-Paper HAT 2.13" conectado ao GPIO.
 
-### 📋 Prerequisites for RPI zero W2 (64bits)
+### 📋 Raspberry Pi Zero 2 W (64 bits)
 
 ![image](https://github.com/user-attachments/assets/e8d276be-4cb2-474d-a74d-b5b6704d22f5)
 
-I did not develop Bjorn for the raspberry pi zero w2 64bits, but several feedbacks have attested that the installation worked perfectly.
+Embora o desenvolvimento original tenha focado no Pi Zero W, há diversos relatos de instalação funcionando no Pi Zero 2 W (64 bits).
 
-- Raspberry Pi OS installed. 
-    - Stable:
-      - System: 64-bit
-      - Kernel version: 6.6
-      - Debian version: 12 (bookworm) '2024-10-22-raspios-bookworm-arm64-lite'
-- Username and hostname set to `bjorn`.
-- 2.13-inch e-Paper HAT connected to GPIO pins.
+- Raspberry Pi OS instalado.
+  - Recomendado:
+    - Sistema: 64-bit
+    - Kernel: 6.6
+    - Debian: 12 (bookworm) `2024-10-22-raspios-bookworm-arm64-lite`
+- Usuário e hostname configurados como `bjorn`.
+- Display e-Paper HAT 2.13" conectado ao GPIO.
 
+Atualmente os modelos de display v2 e v4 foram os mais testados. V1 e V3 podem funcionar, mas exigem validação adicional.
 
-At the moment the paper screen v2  v4 have been tested and implemented.
-I juste hope the V1 & V3 will work the same.
+### 🔨 Instalação
 
-### 🔨 Installation
-
-The fastest way to install Bjorn is using the automatic installation script :
+Para instalação automática, use o script local deste repositório:
 
 ```bash
-# Download and run the installer
-wget https://raw.githubusercontent.com/infinition/Bjorn/refs/heads/main/install_bjorn.sh
-sudo chmod +x install_bjorn.sh && sudo ./install_bjorn.sh
-# Choose the choice 1 for automatic installation. It may take a while as a lot of packages and modules will be installed. You must reboot at the end.
+cd /home/bjorn/Bjorn
+sudo chmod +x install_bjorn.sh
+sudo ./install_bjorn.sh
 ```
 
-For **detailed information** about **installation** process go to [Install Guide](INSTALL.md)
+Para detalhes completos, veja: [Guia de Instalação](INSTALL.md)
 
-## ⚡ Quick Start
+## ⚡ Início Rápido
 
-**Need help ? You struggle to find Bjorn's IP after the installation ?**
-Use my Bjorn Detector & SSH Launcher :
+Está com dificuldade para encontrar o IP do Bjorn após instalar?
+Use o utilitário:
 
 [https://github.com/infinition/bjorn-detector](https://github.com/infinition/bjorn-detector)
 
 ![ezgif-1-a310f5fe8f](https://github.com/user-attachments/assets/182f82f0-5c3a-48a9-a75e-37b9cfa2263a)
 
-**Hmm, You still need help ?**
-For **detailed information** about **troubleshooting** go to [Troubleshooting](TROUBLESHOOTING.md)
+Para solução de problemas detalhada:
+[Solução de Problemas](TROUBLESHOOTING.md)
 
-**Quick Installation**: you can use the fastest way to install **Bjorn** [Getting Started](#-getting-started)
+## 💡 Exemplo de Uso
 
-## 💡 Usage Example
-
-Here's a demonstration of how Bjorn autonomously hunts through your network like a Viking raider (fake demo for illustration):
+Exemplo (simulado) de execução:
 
 ```bash
-# Reconnaissance Phase
-[NetworkScanner] Discovering alive hosts...
-[+] Host found: 192.168.1.100
-    ├── Ports: 22,80,445,3306
+# Reconhecimento
+[NetworkScanner] Descobrindo hosts ativos...
+[+] Host encontrado: 192.168.1.100
+    ├── Portas: 22,80,445,3306
     └── MAC: 00:11:22:33:44:55
 
-# Attack Sequence 
-[NmapVulnScanner] Found vulnerabilities on 192.168.1.100
-    ├── MySQL 5.5 < 5.7 - User Enumeration
-    └── SMB - EternalBlue Candidate
+# Sequência de ataque
+[NmapVulnScanner] Vulnerabilidades encontradas em 192.168.1.100
+    ├── MySQL 5.5 < 5.7 - Enumeração de usuários
+    └── SMB - Candidato a EternalBlue
 
-[SSHBruteforce] Cracking credentials...
-[+] Success! user:password123
-[StealFilesSSH] Extracting sensitive data...
+[SSHBruteforce] Quebrando credenciais...
+[+] Sucesso! user:password123
+[StealFilesSSH] Extraindo arquivos sensíveis...
 
-# Automated Data Exfiltration
-[SQLBruteforce] Database accessed!
-[StealDataSQL] Dumping tables...
-[SMBBruteforce] Share accessible
-[+] Found config files, credentials, backups...
+# Coleta automatizada
+[SQLBruteforce] Banco acessado!
+[StealDataSQL] Exportando tabelas...
+[SMBBruteforce] Compartilhamento acessível
+[+] Configs, credenciais e backups encontrados...
 ```
 
-This is just a demo output - actual results will vary based on your network and target configuration.
+Os resultados reais variam conforme o ambiente e os alvos.
 
-All discovered data is automatically organized in the data/output/ directory, viewable through both the e-Paper display (as indicators) and web interface.
-Bjorn works tirelessly, expanding its network knowledge base and growing stronger with each discovery.
+Os dados descobertos são organizados em `data/output/`, visíveis tanto na interface web quanto nos indicadores do display.
 
-No constant monitoring needed - just deploy and let Bjorn do what it does best: hunt for vulnerabilities.
+⚠️ **Uso exclusivamente educacional e para testes autorizados** ⚠️
 
-🔧 Expand Bjorn's Arsenal!
-Bjorn is designed to be a community-driven weapon forge. Create and share your own attack modules!
+## 🤝 Contribuição
 
-⚠️ **For educational and authorized testing purposes only** ⚠️
+Contribuições bem-vindas em:
 
-## 🤝 Contributing
+- Novos módulos de ataque
+- Correções de bugs
+- Documentação
+- Melhorias de arquitetura e performance
 
-The project welcomes contributions in:
+Mais detalhes:
+[Contribuição](CONTRIBUTING.md), [Código de Conduta](CODE_OF_CONDUCT.md), [Desenvolvimento](DEVELOPMENT.md)
 
-- New attack modules.
-- Bug fixes.
-- Documentation.
-- Feature improvements.
+## 📫 Contato
 
-For **detailed information** about **contributing** process go to [Contributing Docs](CONTRIBUTING.md), [Code Of Conduct](CODE_OF_CONDUCT.md) and [Development Guide](DEVELOPMENT.md).
+- **Issues (GitHub)**: abra no GitHub
+- **Boas práticas**:
+  - Siga princípios éticos e legais
+  - Documente passos de reprodução
+  - Inclua logs e contexto
 
-## 📫 Contact
-
-- **Report Issues**: Via GitHub.
-- **Guidelines**:
-  - Follow ethical guidelines.
-  - Document reproduction steps.
-  - Provide logs and context.
-
-- **Author**: __infinition__
-- **GitHub**: [infinition/Bjorn](https://github.com/infinition/Bjorn)
+- **Autor original**: __infinition__
+- **Projeto original**: [infinition/Bjorn](https://github.com/infinition/Bjorn)
 
 ## 🌠 Stargazers
 
@@ -172,6 +166,6 @@ For **detailed information** about **contributing** process go to [Contributing 
 
 ---
 
-## 📜 License
+## 📜 Licença
 
-2024 - Bjorn is distributed under the MIT License. For more details, please refer to the [LICENSE](LICENSE) file included in this repository.
+2024 - Bjorn é distribuído sob licença MIT. Veja [LICENSE](LICENSE).

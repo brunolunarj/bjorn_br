@@ -1,8 +1,0 @@
-manager
-root
-admin
-db_audit
-dev
-user
-boss
-deploy

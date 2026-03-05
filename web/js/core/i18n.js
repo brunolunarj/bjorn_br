@@ -8,7 +8,7 @@
  * Fallback: missing key in current lang -> EN -> dev warning.
  */
 
-const SUPPORTED = ['en', 'fr', 'es', 'de', 'it', 'ru', 'zh'];
+const SUPPORTED = ['en', 'pt', 'fr', 'es', 'de', 'it', 'ru', 'zh'];
 const STORAGE_KEY = 'bjorn_lang';
 const CACHE = {}; // { lang: { key: string } }
 
@@ -141,7 +141,7 @@ export async function init() {
   // Detect preferred language
   const saved = localStorage.getItem(STORAGE_KEY);
   const browser = (navigator.language || '').slice(0, 2).toLowerCase();
-  const lang = saved || (SUPPORTED.includes(browser) ? browser : 'en');
+  const lang = saved || (SUPPORTED.includes(browser) ? browser : 'pt');
 
   await setLang(lang);
 }
@@ -249,7 +249,7 @@ export function updateDOM(root = document) {
  */
 export function mountLangSelector(container) {
   const LANG_LABELS = {
-    en: 'EN', fr: 'FR', es: 'ES', de: 'DE', it: 'IT', ru: 'RU', zh: 'ZH'
+    en: 'EN', pt: 'PT', fr: 'FR', es: 'ES', de: 'DE', it: 'IT', ru: 'RU', zh: 'ZH'
   };
 
   const select = document.createElement('select');

@@ -9,3 +9,10 @@ pysmb==1.2.10
 pymysql==1.1.1
 sqlalchemy==2.0.36
 python-nmap==0.7.1
+requests==2.32.3
+psutil==6.1.0
+paramiko==3.5.0
+cryptography==43.0.3
+scapy==2.6.0
+dnspython==2.7.0
+pyshark==0.6

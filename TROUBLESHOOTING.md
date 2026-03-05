@@ -1,80 +1,80 @@
-# 🐛 Known Issues and Troubleshooting
+# 🐛 Problemas Conhecidos e Solução de Problemas
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/c5eb4cc1-0c3d-497d-9422-1614651a84ab" alt="thumbnail_IMG_0546" width="98">
 </p>
 
-## 📚 Table of Contents
+## 📚 Sumário
 
-- [Current Development Issues](#-current-development-issues)
-- [Troubleshooting Steps](#-troubleshooting-steps)
-- [License](#-license)
+- [Problemas de desenvolvimento](#-problemas-de-desenvolvimento)
+- [Passos de solução de problemas](#-passos-de-solução-de-problemas)
+- [Licença](#-licença)
 
-## 🪲 Current Development Issues
+## 🪲 Problemas de desenvolvimento
 
-### Long Runtime Issue
+### Execução longa (FD)
 
-- **Problem**: `OSError: [Errno 24] Too many open files`
-- **Status**: Partially resolved with system limits configuration.
-- **Workaround**: Implemented file descriptor limits increase.
-- **Monitoring**: Check open files with `lsof -p $(pgrep -f Bjorn.py) | wc -l`
-- At the moment the logs show periodically this information as (FD : XXX)
+- **Problema**: `OSError: [Errno 24] Too many open files`
+- **Status**: mitigado parcialmente com aumento de limites de descritores.
+- **Monitoramento**:
+  ```bash
+  lsof -p $(pgrep -f Bjorn.py) | wc -l
+  ```
+- Os logs mostram periodicamente esse valor como `FD: XXX`.
 
-## 🛠️ Troubleshooting Steps
+## 🛠️ Passos de solução de problemas
 
-### Service Issues
+### Problemas com serviço
 
 ```bash
-#See bjorn journalctl service
+# Acompanhar logs do serviço
 journalctl -fu bjorn.service
 
-# Check service status
+# Ver status
 sudo systemctl status bjorn.service
 
-# View detailed logs
+# Logs detalhados
 sudo journalctl -u bjorn.service -f
 
-or
-
+# Ou logs da aplicação
 sudo tail -f /home/bjorn/Bjorn/data/logs/*
 
-
-# Check port 8000 usage
+# Verificar uso da porta 8000
 sudo lsof -i :8000
 ```
 
-### Display Issues
+### Problemas de display
 
 ```bash
-# Verify SPI devices
+# Verificar dispositivos SPI
 ls /dev/spi*
 
-# Check user permissions
+# Verificar grupos/permissões
 sudo usermod -a -G spi,gpio bjorn
 ```
 
-### Network Issues
+### Problemas de rede
 
 ```bash
-# Check network interfaces
+# Interfaces de rede
 ip addr show
 
-# Test USB gadget interface
+# Interface USB gadget
 ip link show usb0
 ```
 
-### Permission Issues
+### Problemas de permissão
 
 ```bash
-# Fix ownership
+# Corrigir proprietário
 sudo chown -R bjorn:bjorn /home/bjorn/Bjorn
 
-# Fix permissions
+# Corrigir permissões
 sudo chmod -R 755 /home/bjorn/Bjorn
 ```
 
 ---
 
-## 📜 License
+## 📜 Licença
 
-2024 - Bjorn is distributed under the MIT License. For more details, please refer to the [LICENSE](LICENSE) file included in this repository.
+2024 - Bjorn é distribuído sob licença MIT. Para mais detalhes, consulte [LICENSE](LICENSE).

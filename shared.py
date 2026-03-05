@@ -113,7 +113,7 @@ class SharedData:
         self.default_comments_dir = os.path.join(self.default_config_dir, 'comments')
 
         # Default config subdirectories
-        self.default_comments_file = os.path.join(self.default_comments_dir, 'comments.en.json')
+        self.default_comments_file = os.path.join(self.default_comments_dir, 'comments.pt.json')
         self.default_images_dir = os.path.join(self.default_config_dir, 'images')
         self.default_actions_dir = os.path.join(self.default_config_dir, 'actions')
         
@@ -174,8 +174,8 @@ class SharedData:
             "__title_Bjorn__": "Core Settings",
             "bjorn_name": "Bjorn",
             "current_character": "BJORN",
-            "lang": "en",
-            "lang_priority": ["en", "fr", "es"],
+            "lang": "pt",
+            "lang_priority": ["pt", "en", "fr", "es"],
             "__tooltips_i18n__": {
                 "manual_mode": "settings.tooltip.manual_mode",
                 "ai_mode": "settings.tooltip.ai_mode",
@@ -644,18 +644,18 @@ class SharedData:
         self.ethernet_active = False
         self.pan_connected = False
         self.usb_active = False
-        self.current_ip = "No IP"
+        self.current_ip = "Sem IP"
         self.action_target_ip = ""
-        self.current_ssid = "No Wi-Fi"
+        self.current_ssid = "Sem Wi-Fi"
         
         # Display state
         self.bjorn_character = None
         self.current_path = []
         self.comment_params = {}
-        self.bjorn_says = "Hacking away..."
+        self.bjorn_says = "Trabalhando nas varreduras..."
         self.bjorn_orch_status = "IDLE"
-        self.bjorn_status_text = "IDLE"
-        self.bjorn_status_text2 = "Awakening..."
+        self.bjorn_status_text = "OCIOSO"
+        self.bjorn_status_text2 = "Iniciando..."
         self.bjorn_progress = ""
         
         # --- NEW: AI / RL Real-Time Tracking ---
@@ -998,6 +998,46 @@ class SharedData:
             self.x_center1 = (self.width - self.bjorn1.width) // 2
             self.y_bottom1 = self.height - self.bjorn1.height
 
+    def localize_status_label(self, status: str) -> str:
+        """
+        Human-friendly status label for display, based on active UI language.
+        Keeps internal status keys unchanged for logic/routing.
+        """
+        status = str(status or "IDLE")
+        lang = str(getattr(self, "lang", "en") or "en").lower()
+        if not lang.startswith("pt"):
+            return status
+
+        mapping = {
+            "IDLE": "OCIOSO",
+            "NetworkScanner": "SCAN REDE",
+            "NmapVulnScanner": "SCAN VULN",
+            "WebEnumeration": "ENUM WEB",
+            "SSHBruteforce": "FORCA SSH",
+            "FTPBruteforce": "FORCA FTP",
+            "SMBBruteforce": "FORCA SMB",
+            "TelnetBruteforce": "FORCA TELNET",
+            "SQLBruteforce": "FORCA SQL",
+            "StealFilesSSH": "COLETA SSH",
+            "StealFilesSMB": "COLETA SMB",
+            "StealFilesTelnet": "COLETA TELNET",
+            "StealFilesFTP": "COLETA FTP",
+            "StealDataSQL": "COLETA SQL",
+            "WPAsecPotfileManager": "POTFILES WPA",
+            "YggdrasilMapper": "MAPA SERVICOS",
+            "HeimdallGuard": "MONITORANDO",
+            "OdinEye": "ODIN EYE",
+            "RuneCracker": "RUNE CRACKER",
+            "BerserkerForce": "BERSERKER",
+            "ThorHammer": "THOR HAMMER",
+            "ValkyrieScout": "VALKYRIE",
+            "FreyaHarvest": "FREYA",
+            "DNSPillager": "DNS PILLAGER",
+            "LokiDeceiver": "LOKI",
+            "ARPSpoof": "ARP SPOOF",
+        }
+        return mapping.get(status, status)
+
     def update_bjorn_status(self):
         """Lazy Load the main status image when status changes"""
         try:
@@ -1014,12 +1054,12 @@ class SharedData:
         except Exception:
             self.bjorn_status_image = self.attack
         
-        self.bjorn_status_text = self.bjorn_orch_status
+        self.bjorn_status_text = self.localize_status_label(self.bjorn_orch_status)
 
     def update_image_randomizer(self):
         """Select random image path and Lazy Load it"""
         try:
-            status = self.bjorn_status_text
+            status = self.bjorn_orch_status
             
             # Get list of paths for current status
             paths = self.image_series_paths.get(status)

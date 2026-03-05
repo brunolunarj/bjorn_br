@@ -1,5 +1,12 @@
 {
     "__title_Bjorn__": "Settings",
+    "lang": "pt",
+    "lang_priority": [
+        "pt",
+        "en",
+        "fr",
+        "es"
+    ],
     "manual_mode": false,
     "websrv": true,
     "web_increment ": false,

@@ -1,51 +1,57 @@
-# 🤝 Contributing to Bjorn
+# 🤝 Contribuindo com o Bjorn
 
-We welcome contributions to Bjorn! To make sure the process goes smoothly, please follow these guidelines:
+Contribuições são bem-vindas. Para manter o processo organizado, siga estas orientações:
 
-## 📋 Code of Conduct
+## 📋 Código de Conduta
 
-Please note that all participants in our project are expected to follow our [Code of Conduct](#-code-of-conduct). Make sure to review it before contributing.
+Todos os participantes devem seguir o [Código de Conduta](CODE_OF_CONDUCT.md).
 
-## 🛠 How to Contribute
+## 🛠 Como Contribuir
 
-1. **Fork the repository**:
-   Fork the project to your GitHub account using the GitHub interface.
+1. **Faça um fork do repositório**  
+   Use a interface do GitHub para criar um fork na sua conta.
 
-2. **Create a new branch**:
-   Use a descriptive branch name for your feature or bugfix:
+2. **Crie um ramo novo (branch)**  
+   Use um nome descritivo para sua funcionalidade/correção:
 
-   git checkout -b feature/your-feature-name
+   ```bash
+   git checkout -b feature/nome-da-feature
+   ```
 
-3. **Make your changes**:
-   Implement your feature or fix the bug in your branch. Make sure to include tests where applicable and follow coding standards.
+3. **Implemente sua alteração**  
+   Faça mudanças pequenas e objetivas. Inclua testes quando aplicável e siga os padrões do projeto.
 
-4. **Test your changes**:
-   Run the test suite to ensure your changes don’t break any functionality:
+4. **Teste suas mudanças**  
+   Garanta que nada foi quebrado antes de abrir um pull request (PR).
 
-   - ...
-5. **Commit your changes**:
-   Use meaningful commit messages that explain what you have done:
+5. **Faça commits claros**  
+   Use mensagens objetivas:
 
-   git commit -m "Add feature/fix: Description of changes"
+   ```bash
+   git commit -m "feat/fix: descrição curta da mudança"
+   ```
 
-6. **Push your changes**:
-   Push your changes to your fork:
+6. **Envie para seu fork**
 
-   git push origin feature/your-feature-name
+   ```bash
+   git push origin feature/nome-da-feature
+   ```
 
-7. **Submit a Pull Request**:
-   Create a pull request on the main repository, detailing the changes you’ve made. Link any issues your changes resolve and provide context.
+7. **Abra um pull request (PR)**  
+   Descreva o que foi alterado, por quê, e relacione issues quando houver.
 
-## 📑 Guidelines for Contributions
+## 📑 Boas Práticas
 
-- **Lint your code** before submitting a pull request. We use [ESLint](https://eslint.org/) for frontend and [pylint](https://www.pylint.org/) for backend linting.
-- Ensure **test coverage** for your code. Uncovered code may delay the approval process.
-- Write clear, concise **commit messages**.
+- Execute **lint** (verificação estática) antes de enviar PR.  
+  Frontend: [ESLint](https://eslint.org/)  
+  Backend: [pylint](https://www.pylint.org/)
+- Mantenha **cobertura de testes** para código novo/alterado.
+- Prefira PRs menores e com escopo claro.
 
-Thank you for helping improve!
+Obrigado por contribuir.
 
 ---
 
-## 📜 License
+## 📜 Licença
 
-2024 - Bjorn is distributed under the MIT License. For more details, please refer to the [LICENSE](LICENSE) file included in this repository.
+2024 - Bjorn é distribuído sob licença MIT. Para mais detalhes, consulte o arquivo [LICENSE](LICENSE).

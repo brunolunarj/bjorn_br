@@ -1,48 +1,45 @@
-# 🔒 Security Policy
+# 🔒 Política de Segurança
 
-Security Policy for **Bjorn** repository includes all required compliance matrix and artifact mapping.
+Esta política descreve como reportar vulnerabilidades de forma responsável no projeto **Bjorn**.
 
-## 🧮 Supported Versions
+## 🧮 Versões Suportadas
 
-We provide security updates for the following versions of our project:
+Atualizações de segurança são fornecidas conforme disponibilidade de manutenção ativa.
 
-| Version | Status      | Secure |
-| ------- |-------------| ------ |
-| 1.0.0   | Development | No     |
+| Versão | Status      | Atualizações de Segurança |
+| ------ | ----------- | ------------------------- |
+| 1.0.0  | Desenvolvimento | Limitadas              |
 
-## 🛡️ Security Practices
+## 🛡️ Práticas de Segurança
 
-- We follow best practices for secure coding and infrastructure management.
-- Regular security audits and code reviews are conducted to identify and mitigate potential risks.
-- Dependencies are monitored and updated to address known vulnerabilities.
+- Seguimos boas práticas de desenvolvimento seguro.
+- Realizamos revisões de código para reduzir riscos.
+- Dependências são monitoradas e atualizadas quando necessário.
 
-## 📲 Security Updates
+## 📲 Atualizações de Segurança
 
-- Security updates are released as soon as possible after a vulnerability is confirmed.
-- Users are encouraged to update to the latest version to benefit from security fixes.
+- Correções de segurança são priorizadas após confirmação da vulnerabilidade.
+- Recomenda-se usar sempre a versão mais recente.
 
-## 🚨 Reporting a Vulnerability
+## 🚨 Como Reportar Vulnerabilidade
 
-If you discover a security vulnerability within this project, please follow these steps:
+Se você identificar uma vulnerabilidade:
 
-1. **Do not create a public issue.** Instead, contact us directly to responsibly disclose the vulnerability.
+1. **Não abra issue pública (GitHub)** com detalhes sensíveis.
+2. Envie e-mail para [bjorn-cyberviking@outlook.com](mailto:bjorn-cyberviking@outlook.com) contendo:
+   - Descrição do problema
+   - Passos para reprodução
+   - Impacto estimado
+3. Aguarde retorno da equipe para coordenação da correção.
 
-2. **Email** [bjorn-cyberviking@outlook.com](mailto:bjorn-cyberviking@outlook.com) with the following information:
-
-   - A description of the vulnerability.
-   - Steps to reproduce the issue.
-   - Any potential impact or severity.
-
-3. **Wait for a response.** We will acknowledge your report and work with you to address the issue promptly.
-
-## 🛰️ Additional Resources
+## 🛰️ Recursos Adicionais
 
 - [OWASP Security Guidelines](https://owasp.org/)
 
-Thank you for helping us keep this project secure!
+Obrigado por ajudar a manter o projeto seguro.
 
 ---
 
-## 📜 License
+## 📜 Licença
 
-2024 - Bjorn is distributed under the MIT License. For more details, please refer to the [LICENSE](LICENSE) file included in this repository.
+2024 - Bjorn é distribuído sob licença MIT. Para mais detalhes, consulte [LICENSE](LICENSE).

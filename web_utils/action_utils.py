@@ -440,8 +440,9 @@ class ActionUtils:
             shutil.copytree(default_images_dir, images_dir)
 
             # Comments
+            default_lang = str(getattr(self.shared_data, "lang", "pt") or "pt")
             inserted = self.shared_data.db.import_comments_from_json(
-                self.shared_data.default_comments_file, lang="fr", clear_existing=True
+                self.shared_data.default_comments_file, lang=default_lang, clear_existing=True
             )
 
             # Scripts
@@ -1497,7 +1498,7 @@ class ActionUtils:
         try:
             inserted = self.shared_data.db.import_comments_from_json(
                 self.shared_data.default_comments_file,
-                lang=(data.get('lang') if isinstance(data, dict) else None) or 'fr',
+                lang=(data.get('lang') if isinstance(data, dict) else None) or str(getattr(self.shared_data, "lang", "pt") or "pt"),
                 clear_existing=True
             )
             return {
@@ -1513,7 +1514,7 @@ class ActionUtils:
         """Delete a comment section and its associated comments from DB."""
         try:
             section_name = data.get('section')
-            lang = data.get('lang', 'fr')
+            lang = data.get('lang', str(getattr(self.shared_data, "lang", "pt") or "pt"))
 
             if not section_name:
                 return {'status': 'error', 'message': "Section name is required."}

@@ -150,9 +150,9 @@ class RuntimeStateUpdater(threading.Thread):
         if not getattr(self.shared_data, "bjorn_character", None):
             self.shared_data.bjorn_character = getattr(self.shared_data, "bjorn1", None)
         if not hasattr(self.shared_data, "current_ip"):
-            self.shared_data.current_ip = "No IP"
+            self.shared_data.current_ip = "Sem IP"
         if not hasattr(self.shared_data, "current_ssid"):
-            self.shared_data.current_ssid = "No Wi-Fi"
+            self.shared_data.current_ssid = "Sem Wi-Fi"
 
     def _update_display_stats(self):
         stats = self.shared_data.db.get_display_stats()
@@ -178,7 +178,7 @@ class RuntimeStateUpdater(threading.Thread):
         comment = self.comment_ai.get_comment(status, params=params)
         if comment:
             self.shared_data.bjorn_says = comment
-            self.shared_data.bjorn_status_text = status
+            self.shared_data.bjorn_status_text = self.shared_data.localize_status_label(status)
 
     def _update_network_info(self):
         self.shared_data.current_ip = self._get_ip_address()
@@ -224,11 +224,11 @@ class RuntimeStateUpdater(threading.Thread):
         if img is None:
             img = getattr(self.shared_data, "attack", None)
         self.shared_data.bjorn_status_image = img
-        self.shared_data.bjorn_status_text = status
+        self.shared_data.bjorn_status_text = self.shared_data.localize_status_label(status)
         self._last_status_image_key = status
 
     def _update_main_animation_image(self):
-        status = getattr(self.shared_data, "bjorn_status_text", "IDLE") or "IDLE"
+        status = getattr(self.shared_data, "bjorn_orch_status", "IDLE") or "IDLE"
         paths = self.shared_data.image_series_paths.get(status)
         if not paths:
             paths = self.shared_data.image_series_paths.get("IDLE") or []
@@ -299,7 +299,7 @@ class RuntimeStateUpdater(threading.Thread):
                         return parts[idx + 1].split("/")[0]
             except Exception:
                 continue
-        return "No IP"
+        return "Sem IP"
 
     def _get_ssid(self) -> str:
         try:
@@ -311,10 +311,10 @@ class RuntimeStateUpdater(threading.Thread):
                 timeout=2,
             )
             if result.returncode == 0:
-                return result.stdout.strip() or "No Wi-Fi"
+                return result.stdout.strip() or "Sem Wi-Fi"
         except Exception:
             pass
-        return "No Wi-Fi"
+        return "Sem Wi-Fi"
 
     def _check_all_connections(self) -> Dict[str, bool]:
         results = {"wifi": False, "bluetooth": False, "ethernet": False, "usb": False}

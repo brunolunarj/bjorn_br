@@ -64,7 +64,7 @@ class CommentAI:
         # Initialize first comment for UI using language priority
         if not hasattr(self.shared_data, "bjorn_says") or not getattr(self.shared_data, "bjorn_says"):
             first = self._pick_text("IDLE", lang=None, params=None)
-            self.shared_data.bjorn_says = first or "Initializing..."
+            self.shared_data.bjorn_says = first or "Inicializando..."
 
     # --- Language priority & JSON discovery ----------------------------------
 
@@ -75,7 +75,7 @@ class CommentAI:
         1. explicit `preferred`
         2. shared_data.lang_priority (list)
         3. shared_data.lang (single fallback)
-        4. defaults ["en", "fr"]
+        4. defaults ["pt", "en", "fr"]
         """
         order: List[str] = []
 
@@ -103,7 +103,7 @@ class CommentAI:
                 order.append(l)
 
         # 4) fallback defaults
-        order += ["en", "fr"]
+        order += ["pt", "en", "fr"]
 
         # Deduplicate while preserving order
         seen, res = set(), []
@@ -161,8 +161,43 @@ class CommentAI:
             logger.error(f"Database error counting comments: {e}")
             comment_count = 0
 
+        preferred_lang = self._lang_priority()[0] if self._lang_priority() else "en"
+
         if comment_count > 0:
-            logger.debug(f"Comments already in database: {comment_count}")
+            # DB already has comments; ensure preferred language also exists.
+            try:
+                row = self.shared_data.db.query_one(
+                    "SELECT COUNT(1) AS c FROM comments WHERE lang=?",
+                    (preferred_lang,),
+                )
+                preferred_count = int(_row_get(row, "c", 0) or 0)
+            except Exception:
+                preferred_count = 0
+
+            if preferred_count > 0:
+                logger.debug(f"Comments already in database: {comment_count}")
+                return
+
+            # Import preferred language pack without wiping existing rows.
+            for json_path in self._get_comments_json_paths(preferred_lang):
+                if not os.path.exists(json_path):
+                    continue
+                try:
+                    inserted = int(
+                        self.shared_data.db.import_comments_from_json(
+                            json_path,
+                            lang=preferred_lang,
+                            clear_existing=False,
+                        )
+                    )
+                    if inserted > 0:
+                        logger.info(
+                            f"Imported {inserted} '{preferred_lang}' comments into existing database from {json_path}"
+                        )
+                        return
+                except Exception as e:
+                    logger.error(f"Failed to import '{preferred_lang}' comments from {json_path}: {e}")
+            logger.debug("Preferred language comments not found; keeping existing comment set")
             return
 
         imported = 0
@@ -191,6 +226,18 @@ class CommentAI:
         Schema per row: (text, status, theme, lang, weight)
         """
         default_comments = [
+            # Portuguese (default)
+            ("Escaneando a rede em busca de alvos...", "NetworkScanner", "NetworkScanner", "pt", 2),
+            ("Sistema ocioso, aguardando comandos.", "IDLE", "IDLE", "pt", 3),
+            ("Analisando a topologia da rede...", "NetworkScanner", "NetworkScanner", "pt", 1),
+            ("Processando tentativas de autenticação...", "SSHBruteforce", "SSHBruteforce", "pt", 2),
+            ("Buscando vulnerabilidades...", "NmapVulnScanner", "NmapVulnScanner", "pt", 2),
+            ("Extraindo credenciais dos serviços...", "CredExtractor", "CredExtractor", "pt", 1),
+            ("Monitorando mudanças na rede...", "IDLE", "IDLE", "pt", 2),
+            ("Pronto para iniciar.", "IDLE", "IDLE", "pt", 1),
+            ("Aquisição de alvos em andamento...", "NetworkScanner", "NetworkScanner", "pt", 1),
+            ("Estabelecendo conexões seguras...", "SSHBruteforce", "SSHBruteforce", "pt", 1),
+
             # English
             ("Scanning network for targets...", "NetworkScanner", "NetworkScanner", "en", 2),
             ("System idle, awaiting commands.", "IDLE", "IDLE", "en", 3),

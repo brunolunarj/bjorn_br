@@ -1,0 +1,86 @@
+{
+  "IDLE": [
+    "Modo ocioso: monitorando a rede em silêncio.",
+    "Tudo calmo por enquanto. Aguardando a próxima ação.",
+    "Mantendo vigilância enquanto espero novos alvos.",
+    "Sem eventos críticos no momento. Sistema estável.",
+    "Pronto para agir quando você precisar."
+  ],
+  "ANY": [
+    "Executando operação em andamento...",
+    "Coletando dados e atualizando o estado do sistema.",
+    "Analisando resultados para definir o próximo passo.",
+    "Processando evento atual com prioridade.",
+    "Ajustando estratégia com base no ambiente."
+  ],
+  "WebEnumeration": [
+    "Enumerando caminhos web e recursos expostos.",
+    "Mapeando superfície HTTP/HTTPS do alvo.",
+    "Varredura web ativa: coletando endpoints."
+  ],
+  "NetworkScanner": [
+    "Escaneando a rede para descobrir hosts ativos.",
+    "Descobrindo serviços e portas na rede local.",
+    "Atualizando o mapa de ativos da rede."
+  ],
+  "NmapVulnScanner": [
+    "Iniciando avaliação de vulnerabilidades com Nmap.",
+    "Verificando indícios de CVEs e fraquezas conhecidas.",
+    "Conferindo exposições de serviço no host alvo."
+  ],
+  "SSHBruteforce": [
+    "Testando credenciais SSH do dicionário.",
+    "Tentativas SSH em andamento no alvo.",
+    "Avaliando força de autenticação SSH."
+  ],
+  "FTPBruteforce": [
+    "Testando combinações de acesso FTP.",
+    "Tentativas de autenticação FTP em progresso.",
+    "Validando segurança de credenciais FTP."
+  ],
+  "SMBBruteforce": [
+    "Testando credenciais SMB e compartilhamentos.",
+    "Analisando autenticação SMB no host alvo.",
+    "Enumerando acesso SMB com perfis conhecidos."
+  ],
+  "TelnetBruteforce": [
+    "Tentando autenticação Telnet com dicionário.",
+    "Avaliando exposição de acesso Telnet.",
+    "Verificando robustez de credenciais Telnet."
+  ],
+  "SQLBruteforce": [
+    "Testando credenciais de banco de dados.",
+    "Verificando acesso SQL com combinações conhecidas.",
+    "Avaliando segurança de autenticação SQL."
+  ],
+  "StealFilesSSH": [
+    "Coletando arquivos via acesso SSH obtido.",
+    "Extraindo artefatos úteis do sistema remoto.",
+    "Transferindo arquivos priorizados do host alvo."
+  ],
+  "StealFilesSMB": [
+    "Coletando arquivos em compartilhamentos SMB.",
+    "Acessando diretórios remotos para extração de dados.",
+    "Copiando arquivos relevantes via SMB."
+  ],
+  "StealFilesTelnet": [
+    "Buscando arquivos acessíveis via sessão Telnet.",
+    "Extraindo conteúdo remoto através do canal Telnet.",
+    "Coletando artefatos disponíveis no host."
+  ],
+  "StealFilesFTP": [
+    "Transferindo arquivos via FTP.",
+    "Coletando conteúdo exposto no serviço FTP.",
+    "Extraindo dados do servidor FTP remoto."
+  ],
+  "StealDataSQL": [
+    "Consultando e coletando dados em banco SQL.",
+    "Extraindo registros relevantes do banco alvo.",
+    "Executando coleta estruturada de dados SQL."
+  ],
+  "TestStandalone": [
+    "Executando rotina standalone de validação.",
+    "Teste isolado em andamento.",
+    "Conferindo integridade da operação standalone."
+  ]
+}

@@ -103,7 +103,7 @@ class CommentUtils:
         try:
             inserted = self.shared_data.db.import_comments_from_json(
                 self.shared_data.default_comments_file,
-                lang=(data.get('lang') if isinstance(data, dict) else None) or 'fr',
+                lang=(data.get('lang') if isinstance(data, dict) else None) or str(getattr(self.shared_data, "lang", "pt") or "pt"),
                 clear_existing=True
             )
             return {
@@ -119,7 +119,7 @@ class CommentUtils:
         """Delete a comment section and its associated comments from DB."""
         try:
             section_name = data.get('section')
-            lang = data.get('lang', 'fr')
+            lang = data.get('lang', str(getattr(self.shared_data, "lang", "pt") or "pt"))
 
             if not section_name:
                 return {'status': 'error', 'message': "Section name is required."}

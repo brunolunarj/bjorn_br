@@ -225,8 +225,8 @@ class Display:
                 logger.info("EPD display initialization complete")
 
                 if self.shared_data.showstartupipssid:
-                    ip_address = getattr(self.shared_data, "current_ip", "No IP")
-                    ssid = getattr(self.shared_data, "current_ssid", "No Wi-Fi")
+                    ip_address = getattr(self.shared_data, "current_ip", "Sem IP")
+                    ssid = getattr(self.shared_data, "current_ssid", "Sem Wi-Fi")
                     self.display_startup_ip(ip_address, ssid)
                     time.sleep(self.shared_data.startup_splash_duration)
             else:
@@ -240,7 +240,7 @@ class Display:
             else:
                 logger.warning("EPD initialization failed but continuing in web-only mode")
 
-        self.shared_data.bjorn_status_text2 = "Awakening..."
+        self.shared_data.bjorn_status_text2 = "Iniciando..."
         try:
             self.shared_data.update_battery_status()
         except Exception as e:
@@ -306,7 +306,7 @@ class Display:
 
             draw.text((self.px(37), self.py(5)), "BJORN", font=self.shared_data.font_viking, fill=0)
 
-            message = f"Awakening...\nIP: {ip_address}"
+            message = f"Iniciando...\nIP: {ip_address}"
             draw.text(
                 (self.px(10), int(self.shared_data.height / 2)),
                 message, font=self.shared_data.font_arial14, fill=0
@@ -947,7 +947,7 @@ class Display:
             text_y = bar_y - 2 # Align visually with bar
             draw.text((text_x, text_y), f"{progress_val}%", font=self.shared_data.font_arial9, fill=0)
 
-        current_ip = getattr(self.shared_data, "current_ip", "No IP")
+        current_ip = getattr(self.shared_data, "current_ip", "Sem IP")
         action_target_ip = str(getattr(self.shared_data, "action_target_ip", "") or "").strip()
         orch_status = str(getattr(self.shared_data, "bjorn_orch_status", "IDLE") or "IDLE").upper()
         show_ip = bool(getattr(self.shared_data, "showiponscreen", False))
@@ -976,7 +976,7 @@ class Display:
         show_ssid = bool(getattr(self.shared_data, "showssidonscreen", False))
         if show_ssid:
             # Center SSID
-            ssid = getattr(self.shared_data, "current_ssid", "No Wi-Fi")
+            ssid = getattr(self.shared_data, "current_ssid", "Sem Wi-Fi")
             ssid_w = draw.textlength(ssid, font=self.shared_data.font_arial9)
             center_x = self.shared_data.width // 2
             ssid_x = int(center_x - (ssid_w / 2))

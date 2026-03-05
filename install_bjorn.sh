@@ -204,6 +204,10 @@ check_system_compatibility() {
 # Install system dependencies
 install_dependencies() {
     log "INFO" "Installing system dependencies..."
+
+    # Avoid interactive prompts during unattended installs (notably tshark/wireshark-common)
+    export DEBIAN_FRONTEND=noninteractive
+    echo "wireshark-common wireshark-common/install-setuid boolean false" | debconf-set-selections
     
     # Update package list
     apt-get update
@@ -232,6 +236,13 @@ install_dependencies() {
         "libi2c-dev"
         "libatlas-base-dev"
         "build-essential"
+        "smbclient"
+        "dnsmasq"
+        "hostapd"
+        "aircrack-ng"
+        "tshark"
+        "net-tools"
+        "python3-dbus"
     )
     
     # Install packages
@@ -337,6 +348,22 @@ setup_bjorn() {
     if [ -f "config/shared_config.json" ]; then
         sed -i "s/\"epd_type\": \"[^\"]*\"/\"epd_type\": \"$EPD_VERSION\"/" config/shared_config.json
         check_success "Updated E-Paper display configuration to $EPD_VERSION"
+
+        # Force PT-BR language defaults for Web UI and display comments.
+        python3 - << 'PY'
+import json
+from pathlib import Path
+p = Path("config/shared_config.json")
+try:
+    data = json.loads(p.read_text(encoding="utf-8"))
+except Exception:
+    data = {}
+data["lang"] = "pt"
+data["lang_priority"] = ["pt", "en", "fr", "es"]
+p.write_text(json.dumps(data, ensure_ascii=False, indent=4) + "\n", encoding="utf-8")
+print("language defaults updated to pt")
+PY
+        check_success "Updated default language to pt-BR"
     else
         log "ERROR" "Configuration file not found: config/shared_config.json"
         handle_error "E-Paper display configuration update"
@@ -654,6 +681,3 @@ main() {
 }
 
 main
-
-
-

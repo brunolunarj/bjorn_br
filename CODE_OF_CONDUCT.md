@@ -1,40 +1,42 @@
-# 📝 Code of Conduct
+# 📝 Código de Conduta
 
-Take Note About This... **Take Note...**
+## 🤝 Nosso Compromisso
 
-## 🤝 Our Commitment
+Estamos comprometidos em manter um ambiente aberto, acolhedor e respeitoso para todos os contribuidores.  
+Assim, toda pessoa que participa do **Bjorn** deve seguir este código de conduta.
 
-We are committed to fostering an open and welcoming environment for all contributors. As such, everyone who participates in **Bjorn** is expected to adhere to the following code of conduct.
+## 🌟 Comportamentos Esperados
 
-## 🌟 Expected Behavior
+- **Respeito:** respeitar diferentes pontos de vista e experiências.
+- **Feedback construtivo:** oferecer críticas construtivas e estar aberto a recebê-las.
+- **Empatia e gentileza:** tratar outros contribuidores com educação.
+- **Respeito aos mantenedores:** respeitar decisões de manutenção e governança do projeto.
+- **Boa-fé:** assumir intenção positiva nas interações.
 
-- **Respect:** Be respectful of differing viewpoints and experiences.
-- **Constructive Feedback:** Provide constructive feedback and be open to receiving it.
-- **Empathy and Kindness:** Show empathy and kindness towards other contributors.
-- **Respect for Maintainers:** Respect the decisions of the maintainers.
-- **Positive Intent:** Assume positive intent in interactions with others.
+## 🚫 Comportamentos Inaceitáveis
 
-## 🚫 Unacceptable Behavior
+- **Assédio ou discriminação** de qualquer tipo.
+- **Linguagem ou conteúdo inapropriado**.
+- **Ataques pessoais** ou insultos.
+- **Assédio público ou privado**.
 
-- **Harassment or Discrimination:** Harassment or discrimination in any form.
-- **Inappropriate Language or Imagery:** Use of inappropriate language or imagery.
-- **Personal Attacks:** Personal attacks or insults.
-- **Public or Private Harassment:** Public or private harassment.
+## 📢 Como Reportar Conduta Inadequada
 
-## 📢 Reporting Misconduct
+Se você identificar comportamento que viole este código, entre em contato por e-mail:  
+[bjorn-cyberviking@outlook.com](mailto:bjorn-cyberviking@outlook.com)
 
-If you encounter any behavior that violates this code of conduct, please report it by contacting [bjorn-cyberviking@outlook.com](mailto:bjorn-cyberviking@outlook.com). All complaints will be reviewed and handled appropriately.
+Todos os relatos serão avaliados e tratados com seriedade.
 
-## ⚖️ Enforcement
+## ⚖️ Aplicação
 
-Instances of unacceptable behavior may be addressed by the project maintainers, who are responsible for clarifying and enforcing this code of conduct. Violations may result in temporary or permanent bans from the project and related spaces.
+Casos de comportamento inaceitável podem ser tratados pelos mantenedores do projeto, responsáveis por esclarecer e aplicar este código de conduta. Violações podem resultar em restrições temporárias ou banimento permanente dos espaços do projeto.
 
-## 🙏 Acknowledgments
+## 🙏 Créditos
 
-This code of conduct is adapted from the [Contributor Covenant, version 2.0](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html).
+Este código de conduta é adaptado do [Contributor Covenant, versão 2.0](https://www.contributor-covenant.org/version/2/0/code_of_conduct.html).
 
 ---
 
-## 📜 License
+## 📜 Licença
 
-2024 - Bjorn is distributed under the MIT License. For more details, please refer to the [LICENSE](LICENSE) file included in this repository.
+2024 - Bjorn é distribuído sob licença MIT. Para mais detalhes, consulte o arquivo [LICENSE](LICENSE).

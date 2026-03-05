@@ -135,3 +135,8 @@ $RECYCLE.BIN/
 
 scripts
 */certs/
+
+# Local project clones / migration leftovers
+Bjorn-ai/
+bjornbr/
+backup/
