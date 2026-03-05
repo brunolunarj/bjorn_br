@@ -25,6 +25,7 @@ Bjorn é uma ferramenta autônoma de segurança ofensiva e avaliação de vulner
   - [Pré-requisitos](#-pré-requisitos)
   - [Instalação](#-instalação)
   - [Instalação via GitHub (bjorn_br)](#-instalação-via-github-bjorn_br)
+  - [Integração com Bjorn-cortex](#-integração-com-bjorn-cortex)
 - [Início Rápido](#-início-rápido)
 - [Exemplo de Uso](#-exemplo-de-uso)
 - [Contribuição](#-contribuição)
@@ -110,6 +111,20 @@ Se preferir a branch de desenvolvimento:
 git checkout ai
 sudo ./install_bjorn.sh
 ```
+
+### 🧠 Integração com Bjorn-cortex
+
+Este fork já possui integração no cliente de IA (`ai_server_url`) para:
+
+- buscar modelo mais recente (`/model/latest`)
+- baixar modelo e pesos (`/model/download/...`)
+- enviar dados para treino (`/upload`)
+
+Template Docker Compose:
+
+- [deploy/bjorn-cortex/README.md](deploy/bjorn-cortex/README.md)
+- [deploy/bjorn-cortex/docker-compose.yml](deploy/bjorn-cortex/docker-compose.yml)
+- [deploy/bjorn-cortex/.env.example](deploy/bjorn-cortex/.env.example)
 
 Para detalhes completos, veja: [Guia de Instalação](INSTALL.md)
 
